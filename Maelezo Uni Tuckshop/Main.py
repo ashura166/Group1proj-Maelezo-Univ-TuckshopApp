@@ -18,14 +18,49 @@ class TuckShopApp:
         self.root.title("Tuck Shop Management System")
         self.root.geometry("1200x700")
 
+        # Set the background color to light green
+        self.root.configure(bg="#ccffcc")  # Light green background
+
         # Style Configuration
         self.style = ttk.Style()
         self.style.configure("Title.TLabel", font=("Helvetica", 24, "bold"))
         self.style.configure("Subtitle.TLabel", font=("Helvetica", 12))
         self.style.configure("Card.TFrame", relief="raised", padding=10)
 
-        self.setup_ui()
-        self.load_data()
+        self.show_login_panel()
+
+    def show_login_panel(self):
+        self.login_frame = ttk.Frame(self.root, padding="20")
+        self.login_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        ttk.Label(self.login_frame, text="Admin Login", style="Title.TLabel").grid(
+            row=0, column=0, columnspan=2, pady=(0, 20)
+        )
+
+        ttk.Label(self.login_frame, text="Username:").grid(row=1, column=0, pady=5, padx=5, sticky="w")
+        self.username_entry = ttk.Entry(self.login_frame)
+        self.username_entry.grid(row=1, column=1, pady=5, padx=5, sticky="ew")
+
+        ttk.Label(self.login_frame, text="Password:").grid(row=2, column=0, pady=5, padx=5, sticky="w")
+        self.password_entry = ttk.Entry(self.login_frame, show="*")
+        self.password_entry.grid(row=2, column=1, pady=5, padx=5, sticky="ew")
+
+        ttk.Button(self.login_frame, text="Login", command=self.check_login).grid(
+            row=3, column=0, columnspan=2, pady=10
+        )
+
+        self.login_frame.grid_columnconfigure(1, weight=1)
+
+    def check_login(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+        if username == "Admin" and password == "1234":
+            self.login_frame.destroy()
+            self.setup_ui()
+            self.load_data()
+        else:
+            messagebox.showerror("Error", "Invalid username or password!")
+
 
     def setup_ui(self):
         # Main container
